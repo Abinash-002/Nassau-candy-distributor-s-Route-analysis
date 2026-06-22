@@ -1,0 +1,150 @@
+# Nassau Candy Distributor - Route Analysis Configuration
+
+# Data Paths
+data:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  output_dir: "data/outputs"
+
+# Factory Information
+factories:
+  - name: "Lot's O' Nuts"
+    latitude: 32.881893
+    longitude: -111.768036
+    region: "West"
+  - name: "Wicked Choccy's"
+    latitude: 32.076176
+    longitude: -81.088371
+    region: "South"
+  - name: "Sugar Shack"
+    latitude: 48.11914
+    longitude: -96.18115
+    region: "Midwest"
+  - name: "Secret Factory"
+    latitude: 41.446333
+    longitude: -90.565487
+    region: "Midwest"
+  - name: "The Other Factory"
+    latitude: 35.1175
+    longitude: -89.971107
+    region: "South"
+
+# Product-Factory Mapping
+products:
+  Chocolate:
+    - name: "Wonka Bar - Nutty Crunch Surprise"
+      factory: "Lot's O' Nuts"
+    - name: "Wonka Bar - Fudge Mallows"
+      factory: "Lot's O' Nuts"
+    - name: "Wonka Bar - Scrumdiddlyumptious"
+      factory: "Lot's O' Nuts"
+    - name: "Wonka Bar - Milk Chocolate"
+      factory: "Wicked Choccy's"
+    - name: "Wonka Bar - Triple Dazzle Caramel"
+      factory: "Wicked Choccy's"
+  Sugar:
+    - name: "Laffy Taffy"
+      factory: "Sugar Shack"
+    - name: "SweeTARTS"
+      factory: "Sugar Shack"
+    - name: "Nerds"
+      factory: "Sugar Shack"
+    - name: "Fun Dip"
+      factory: "Sugar Shack"
+    - name: "Everlasting Gobstopper"
+      factory: "Secret Factory"
+    - name: "Hair Toffee"
+      factory: "The Other Factory"
+  Other:
+    - name: "Fizzy Lifting Drinks"
+      factory: "Sugar Shack"
+    - name: "Lickable Wallpaper"
+      factory: "Secret Factory"
+    - name: "Wonka Gum"
+      factory: "Secret Factory"
+    - name: "Kazookles"
+      factory: "The Other Factory"
+
+# Ship Modes
+ship_modes:
+  - "Standard"
+  - "Expedited"
+
+# Performance Thresholds
+thresholds:
+  delay_days: 7  # Days to consider a shipment delayed
+  acceptable_lead_time: 5  # Target lead time in days
+  high_volume_threshold: 100  # Orders per route per month
+  efficiency_score_good: 85  # Good efficiency score
+  efficiency_score_acceptable: 70  # Acceptable efficiency score
+
+# Analysis Parameters
+analysis:
+  percentiles: [25, 50, 75, 90, 95]
+  anomaly_detection_method: "isolation_forest"  # Options: isolation_forest, dbscan
+  clustering_method: "kmeans"  # Options: kmeans, dbscan, hierarchical
+  lead_time_window_days: 365  # Analysis window in days
+
+# Dashboard Settings
+dashboard:
+  theme: "light"  # Options: light, dark
+  default_date_range: 365  # Days to show by default
+  max_routes_to_display: 50
+  map_zoom_level: 4
+  heatmap_colorscale: "Viridis"  # Plotly colorscale
+
+# Logging
+logging:
+  level: "INFO"  # Options: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/analysis.log"
+
+# Model Parameters
+models:
+  xgboost:
+    max_depth: 7
+    learning_rate: 0.1
+    n_estimators: 100
+    random_state: 42
+  
+  lightgbm:
+    num_leaves: 31
+    learning_rate: 0.1
+    n_estimators: 100
+    random_state: 42
+  
+  isolation_forest:
+    contamination: 0.05
+    n_estimators: 100
+    random_state: 42
+  
+  kmeans:
+    n_clusters: 5
+    random_state: 42
+
+# Feature Engineering
+features:
+  lead_time_features:
+    - "shipping_lead_time_days"
+    - "shipping_lead_time_hours"
+    - "is_weekend_order"
+    - "is_holiday_order"
+  
+  route_features:
+    - "route_avg_lead_time"
+    - "route_std_lead_time"
+    - "route_volume"
+    - "route_efficiency_score"
+  
+  geospatial_features:
+    - "distance_from_factory"
+    - "region"
+    - "state"
+    - "city_tier"
+
+# Report Settings
+reports:
+  include_visualizations: true
+  include_recommendations: true
+  include_executive_summary: true
+  output_format: ["html", "pdf", "markdown"]
