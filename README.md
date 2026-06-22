@@ -234,13 +234,6 @@ streamlit run dashboard/app.py
 5. ⏳ Generate insights report (`reports/analysis_report.md`)
 6. ⏳ Present executive summary to stakeholders
 
-## 📞 Support
-
-For questions, issues, or contributions, please:
-- Open a GitHub issue
-- Review the documentation in `/docs`
-- Check the research paper in `/reports`
-
 ---
 
 **Project Status**: 
